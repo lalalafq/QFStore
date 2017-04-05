@@ -108,13 +108,13 @@
 
 - (RACSignal *)registerSubscriber:(NSObject *)subscriber forServiceArray:(NSArray *)serviceArray
 {
-    RACSignal * signal = [[RACSignal alloc] init];
+    RACSignal * signal;
     for (NSString * serviceName in serviceArray)
     {
         NSAssert([serviceName isKindOfClass:[NSString class]], @"serviceName must be a string object");
         
         RACSignal * subSubject = [self registerSubscriber:subscriber forServiceName:serviceName enableServiceChain:NO];
-        signal = [signal merge:subSubject];
+        signal = signal ? [signal merge:subSubject] : subSubject;
     }
     return signal;
 }
